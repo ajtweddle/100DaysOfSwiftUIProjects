@@ -10,11 +10,14 @@ import SwiftUI
 struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
-
+    @State private var finalScore = ""
+    @State private var endGame = false
+    
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
     @State private var userScore = 0
-
+    @State private var gamesPlayed = 0
+    
     var body: some View {
         ZStack {
             RadialGradient(stops: [
@@ -22,47 +25,47 @@ struct ContentView: View {
                 .init(color: Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.3),
             ], center: .top, startRadius: 200, endRadius: 400)
             .ignoresSafeArea()
-
+            
             VStack {
                 Spacer()
                 Text("Guess the Flag")
                     .font(.largeTitle.weight(.bold))
                     .foregroundColor(.white)
-
-            VStack(spacing: 15) {
-                VStack {
-                    Text("Tap the flag of")
-                        .font(.subheadline.weight(.heavy))
-                        .foregroundStyle(.secondary)
-                    
-                    Text(countries[correctAnswer])
-                        .font(.largeTitle.weight(.semibold))
-                }
                 
-                ForEach(0..<3) { number in
-                    Button {
-                        flagTapped(number)
-                    } label: {
-                        Image(countries[number])
-                            .renderingMode(.original)
-                            .clipShape(Capsule())
-                            .shadow(radius: 5)
+                VStack(spacing: 15) {
+                    VStack {
+                        Text("Tap the flag of")
+                            .font(.subheadline.weight(.heavy))
+                            .foregroundStyle(.secondary)
+                        
+                        Text(countries[correctAnswer])
+                            .font(.largeTitle.weight(.semibold))
+                    }
+                    
+                    ForEach(0..<3) { number in
+                        Button {
+                            flagTapped(number)
+                        } label: {
+                            Image(countries[number])
+                                .renderingMode(.original)
+                                .clipShape(Capsule())
+                                .shadow(radius: 5)
+                        }
                     }
                 }
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 20)
-            .background(.regularMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-
-Spacer()
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.regularMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                Spacer()
                 Spacer()
                 Text("Score: \(userScore)")
                     .foregroundColor(.white)
                     .font(.title.bold())
                 
                 Spacer()
-        }
+            }
             .padding()
         }
         .alert(scoreTitle, isPresented: $showingScore) {
@@ -70,27 +73,46 @@ Spacer()
         } message: {
             Text("Your score is \(userScore)")
         }
+        .alert(finalScore, isPresented: $endGame) {
+            Button("Play again", action: reset)
+        } message: {
+            Text("Fancy another game?")
+        }
     }
-
+    
     func flagTapped(_ number: Int) {
         if number == correctAnswer {
             scoreTitle = "Correct"
             userScore += 1
+            gamesPlayed += 1
         } else {
             scoreTitle = "Wrong: that's the flag of \(countries[number])"
+            gamesPlayed += 1
         }
-
+        
         showingScore = true
     }
-
+    
     func askQuestion() {
+        if gamesPlayed < 8 {
+            countries.shuffle()
+            correctAnswer = Int.random(in: 0...2)
+        } else {
+            endGame = true
+            finalScore = "Well done! you scored \(userScore) out of \(gamesPlayed)"
+        }
+    }
+    
+    func reset() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        userScore = 0
+        gamesPlayed = 0
     }
-
+    
 }
-
-struct ContentView_Previews: PreviewProvider {
+    
+    struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
