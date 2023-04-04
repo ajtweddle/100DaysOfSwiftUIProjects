@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var checkAmount = 0.0
     @State private var numberOfPeople = 2
-    @State private var tipPercentage = 0
+    @State private var tipPercentage = 20
     @FocusState private var amountIsFocused: Bool
 
     // let tipPercentages = [10, 15, 20, 25, 0]
@@ -62,6 +62,7 @@ let grandTotal = totalAmount
 
                 Section {
                     Text(totalAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                        .foregroundColor(tipPercentage == 0 ? .red : .primary)
                 } header: {
                     Text("Total check amount")
                 }
