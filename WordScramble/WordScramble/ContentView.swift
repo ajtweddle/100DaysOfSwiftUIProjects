@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var usedWords = [String]()
     @State private var rootWord = ""
     @State private var newWord = ""
+    @State private var userScore = 0
 
     @State private var errorTitle = ""
     @State private var errorMessage = ""
@@ -32,6 +33,11 @@ struct ContentView: View {
                         }
                     }
                 }
+
+                Section {
+                    Text("Your score is \(userScore)")
+                                            }
+                         
             }
             .navigationTitle(rootWord)
             .onSubmit(addNewWord)
@@ -76,9 +82,13 @@ struct ContentView: View {
         }
 
         newWord = ""
+        userScore += answer.count - 2
     }
 
     func startGame() {
+        usedWords = [String]()
+        userScore = 0
+
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
             if let startWords = try? String(contentsOf: startWordsURL) {
                 let allWords = startWords.components(separatedBy: "\n")
@@ -88,7 +98,7 @@ struct ContentView: View {
         }
 
         fatalError("Could not load start.txt from bundle.")
-    }
+   }
 
     func isNew(word: String) -> Bool {
         rootWord != word
