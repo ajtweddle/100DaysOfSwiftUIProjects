@@ -46,7 +46,12 @@ struct ContentView: View {
 
     func addNewWord() {
         let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
-        guard answer.count > 0 else { return }
+        guard answer.count > 2 else { return }
+
+        guard isNew(word: answer) else {
+            wordError(title: "Word used already", message: "That would be too easy!")
+            return
+        }
 
         guard isOriginal(word: answer) else {
             wordError(title: "Word used already", message: "Be more original!")
@@ -80,6 +85,10 @@ struct ContentView: View {
         }
 
         fatalError("Could not load start.txt from bundle.")
+    }
+
+    func isNew(word: String) -> Bool {
+        rootWord != word
     }
 
     func isOriginal(word: String) -> Bool {
