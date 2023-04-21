@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9DCCB95D29F2BF3700A0C492 /* FormatStyle-LocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCCB95C29F2BF3700A0C492 /* FormatStyle-LocalCurrency.swift */; };
+		9DCCB95F29F2C18700A0C492 /* View-ExpenseStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCCB95E29F2C18700A0C492 /* View-ExpenseStyle.swift */; };
 		9DE4FED729F138CD00F225CC /* iExpenseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE4FED629F138CD00F225CC /* iExpenseApp.swift */; };
 		9DE4FED929F138CD00F225CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE4FED829F138CD00F225CC /* ContentView.swift */; };
 		9DE4FEDB29F138CE00F225CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DE4FEDA29F138CE00F225CC /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		9DCCB95C29F2BF3700A0C492 /* FormatStyle-LocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle-LocalCurrency.swift"; sourceTree = "<group>"; };
+		9DCCB95E29F2C18700A0C492 /* View-ExpenseStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View-ExpenseStyle.swift"; sourceTree = "<group>"; };
 		9DE4FED329F138CD00F225CC /* iExpense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iExpense.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DE4FED629F138CD00F225CC /* iExpenseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iExpenseApp.swift; sourceTree = "<group>"; };
 		9DE4FED829F138CD00F225CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				9DE8F30E29F18E6900CCA4C7 /* ExpenseItem.swift */,
 				9DE8F31029F18EC000CCA4C7 /* Expenses.swift */,
 				9DCCB95C29F2BF3700A0C492 /* FormatStyle-LocalCurrency.swift */,
+				9DCCB95E29F2C18700A0C492 /* View-ExpenseStyle.swift */,
 				9DE4FEDA29F138CE00F225CC /* Assets.xcassets */,
 				9DE4FEDC29F138CE00F225CC /* Preview Content */,
 			);
@@ -152,6 +155,7 @@
 				9DE8F31129F18EC000CCA4C7 /* Expenses.swift in Sources */,
 				9DE4FED929F138CD00F225CC /* ContentView.swift in Sources */,
 				9DE8F31329F1C08A00CCA4C7 /* AddView.swift in Sources */,
+				9DCCB95F29F2C18700A0C492 /* View-ExpenseStyle.swift in Sources */,
 				9DCCB95D29F2BF3700A0C492 /* FormatStyle-LocalCurrency.swift in Sources */,
 				9DE8F30F29F18E6900CCA4C7 /* ExpenseItem.swift in Sources */,
 				9DE4FED729F138CD00F225CC /* iExpenseApp.swift in Sources */,
