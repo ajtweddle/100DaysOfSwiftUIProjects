@@ -27,6 +27,10 @@ struct MissionView: View {
                         .frame(maxWidth: geometry.size.width * 0.6)
                         .padding(.top)
 
+                    if let date = mission.launchDate {
+                        Label(date.formatted(date: .complete, time: .omitted), systemImage: "calendar")
+                    }
+
                     VStack(alignment: .leading) {
 
                         Rectangle()
