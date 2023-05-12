@@ -26,6 +26,8 @@ struct CrewRole: Codable {
         "apollo\(id)"
     }
 
+    let badge: String
+
     var formattedLaunchDate: String {
         launchDate?.formatted(date: .abbreviated, time: .omitted) ?? "N/A"
     }
