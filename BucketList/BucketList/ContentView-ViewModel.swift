@@ -15,6 +15,8 @@ extension ContentView {
         @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 25, longitudeDelta: 25))
         @Published private(set) var locations: [Location]
         @Published var selectedPlace: Location?
+        @Published var authenticationError = "Unknown error"
+        @Published var isShowingAuthenticationError = false
 
         let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPlaces")
 
@@ -53,14 +55,19 @@ extension ContentView {
 
                     if success {
                         Task { @MainActor in
-                            self.isUnlocked = true
+                            if success {
+                                self.isUnlocked = true
+                            } else {
+                                self.authenticationError = "There was a problem authenticating you; please try again."
+                                self.isShowingAuthenticationError = true
+                            }
                         }
-                    } else {
-                        // error
                     }
-                }
+                        }
             } else {
                 // no biometrics
+                authenticationError = "Sorry, your device does not support biometric authentication."
+                isShowingAuthenticationError = true
             }
         }
 
