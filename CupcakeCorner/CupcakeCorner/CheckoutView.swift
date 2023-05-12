@@ -23,6 +23,8 @@ struct CheckoutView: View {
                     ProgressView()
                 }
                 .frame(height: 233)
+                // Hide image loading to stop VoiceOver chatter
+                .accessibilityHidden(true)
 
                 Text("Your total is \(order.cost, format: .currency(code: "USD"))")
                     .font(.title)
