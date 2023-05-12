@@ -11,14 +11,33 @@ import MapKit
 
 extension ContentView {
     @MainActor class ViewModel: ObservableObject {
-        @Published var isUnlocked = false
         @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 25, longitudeDelta: 25))
         @Published private(set) var locations: [Location]
         @Published var selectedPlace: Location?
+        @Published var isUnlocked = false
+
         @Published var authenticationError = "Unknown error"
         @Published var isShowingAuthenticationError = false
 
         let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPlaces")
+
+        init() {
+            do {
+                let data = try Data(contentsOf: savePath)
+                locations = try JSONDecoder().decode([Location].self, from: data)
+            } catch {
+                locations = []
+            }
+        }
+
+        func save() {
+            do {
+                let data = try JSONEncoder().encode(locations)
+                try data.write(to: savePath, options: [.atomic, .completeFileProtection])
+            } catch {
+                print("Unable to save data.")
+            }
+        }
 
         func addLocation() {
             let newLocation = Location(id: UUID(), name: "New location", description: "", latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude)
@@ -35,15 +54,6 @@ extension ContentView {
             }
         }
 
-        func save() {
-            do {
-                let data = try JSONEncoder().encode(locations)
-                try data.write(to: savePath, options: [.atomic, .completeFileProtection])
-            } catch {
-                print("Unable to save data.")
-            }
-        }
-
         func authenticate() {
             let context = LAContext()
             var error: NSError?
@@ -52,33 +62,19 @@ extension ContentView {
                 let reason = "Please authenticate yourself to unlock your places."
 
                 context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-
-                    if success {
-                        Task { @MainActor in
-                            if success {
-                                self.isUnlocked = true
-                            } else {
-                                self.authenticationError = "There was a problem authenticating you; please try again."
-                                self.isShowingAuthenticationError = true
-                            }
+                    Task { @MainActor in
+                        if success {
+                            self.isUnlocked = true
+                        } else {
+                            self.authenticationError = "There was a problem authenticating you; please try again."
+                            self.isShowingAuthenticationError = true
                         }
                     }
-                        }
+                }
             } else {
-                // no biometrics
                 authenticationError = "Sorry, your device does not support biometric authentication."
                 isShowingAuthenticationError = true
             }
         }
-
-        init() {
-            do {
-                let data = try Data(contentsOf: savePath)
-                locations = try JSONDecoder().decode([Location].self, from: data)
-            } catch {
-                locations = []
-            }
-        }
     }
 }
-
