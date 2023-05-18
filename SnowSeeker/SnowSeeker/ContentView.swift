@@ -7,22 +7,22 @@
 
 import SwiftUI
 
+enum SortType {
+    case `default`, alphabetical, country
+}
+
 struct ContentView: View {
     let resorts: [Resort] = Bundle.main.decode("resorts.json")
+
     @StateObject var favorites = Favorites()
     @State private var searchText = ""
 
-    var filteredResorts: [Resort] {
-        if searchText.isEmpty {
-            return resorts
-        } else {
-            return resorts.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
-        }
-    }
+    @State private var sortType = SortType.default
+    @State private var showingSortOptions = false
 
     var body: some View {
         NavigationView {
-            List(filteredResorts) { resort in
+            List(sortedResorts) { resort in
                 NavigationLink {
                     ResortView(resort: resort)
                 } label: {
@@ -55,10 +55,41 @@ struct ContentView: View {
             }
             .navigationTitle("Resorts")
             .searchable(text: $searchText, prompt: "Search for a resort")
+            .toolbar {
+                Button {
+                    showingSortOptions = true
+                } label: {
+                    Label("Change sort order", systemImage: "arrow.up.arrow.down")
+                }
+            }
+            .confirmationDialog("Sort order", isPresented: $showingSortOptions) {
+                Button("Default") { sortType = .default }
+                Button("Alphabetical") { sortType = .alphabetical }
+                Button("By Country") { sortType = .country }
+            }
 
             WelcomeView()
         }
         .environmentObject(favorites)
+    }
+
+    var filteredResorts: [Resort] {
+        if searchText.isEmpty {
+            return resorts
+        } else {
+            return resorts.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+
+    var sortedResorts: [Resort] {
+        switch sortType {
+        case .default:
+            return filteredResorts
+        case .alphabetical:
+            return filteredResorts.sorted { $0.name < $1.name }
+        case .country:
+            return filteredResorts.sorted { $0.country < $1.country }
+        }
     }
 
 }
